@@ -109,6 +109,21 @@ namespace SqlTokenizer
                     this.buffer.Clear();
                     this.ReadNextChar();
                     return token;
+                case '!':
+                case '<':
+                case '>':
+                    this.buffer.Append(currentChar);
+                    this.ReadNextChar();
+
+                    if (currentChar == '=' || currentChar == '>')
+                    {
+                        this.buffer.Append(currentChar);
+                        this.ReadNextChar();
+                    }
+
+                    var nottoken = new Token { Value = this.buffer.ToString(), Type = TokenTypes.Symbol };
+                    this.buffer.Clear();
+                    return nottoken;
                 default:
                     this.ReadNextChar();
                     break;
